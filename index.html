@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>design-snatch · gallery index</title>
+  <style>
+    :root {
+      --bg: #0b0c0e;
+      --panel: #141619;
+      --line: #23262b;
+      --ink: #e8eaed;
+      --muted: #8b9099;
+      --accent: #d6ff4b;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      padding: 48px clamp(20px, 6vw, 96px) 96px;
+    }
+    header { max-width: 720px; margin-bottom: 56px; }
+    h1 {
+      font-size: 13px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); margin: 0 0 16px; font-weight: 600;
+    }
+    .lede { font-size: clamp(22px, 3vw, 32px); line-height: 1.25; margin: 0; font-weight: 500; }
+    .lede span { color: var(--muted); }
+    section { margin-top: 56px; }
+    .cat-head {
+      display: flex; align-items: baseline; gap: 12px;
+      border-bottom: 1px solid var(--line); padding-bottom: 10px; margin-bottom: 24px;
+    }
+    .cat-head h2 { font-size: 15px; margin: 0; font-weight: 600; letter-spacing: 0.02em; }
+    .cat-head .count { font-size: 12px; color: var(--muted); }
+    .grid {
+      display: grid; gap: 12px;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    }
+    a.card {
+      display: block; text-decoration: none; color: inherit;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+      padding: 18px 20px; transition: border-color .15s ease, transform .15s ease, background .15s ease;
+    }
+    a.card:hover { border-color: var(--accent); transform: translateY(-2px); background: #181b1f; }
+    .card .name { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .card .host { font-size: 12px; color: var(--muted); word-break: break-all; }
+    .card .note { font-size: 13px; color: var(--muted); margin-top: 10px; line-height: 1.45; }
+    footer { margin-top: 72px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); padding-top: 20px; }
+    code { background: var(--panel); border: 1px solid var(--line); border-radius: 5px; padding: 1px 6px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>design-snatch</h1>
+    <p class="lede">Curated galleries of high-craft web design. <span>Browse, find a design you like, and I'll capture its design language into a reusable skill.</span></p>
+  </header>
+
+  <main id="app"></main>
+
+  <footer>
+    Local index · add sites by appending to the <code>SITES</code> array in this file's source.
+  </footer>
+
+  <script>
+    // [LAW:one-source-of-truth] The gallery list lives here and nowhere else.
+    // Adding a site is one entry; the DOM below is derived, never hand-authored.
+    const SITES = [
+      // General award galleries
+      { name: "Awwwards",         url: "https://www.awwwards.com/websites/",   cat: "General award galleries", note: "The reference set for cutting-edge, high-craft site design." },
+      { name: "CSS Design Awards", url: "https://www.cssdesignawards.com/",     cat: "General award galleries", note: "Daily awards; strong on visual polish and interaction." },
+      { name: "SiteInspire",      url: "https://www.siteinspire.com/",          cat: "General award galleries", note: "Tightly curated, tag-filterable by style and type." },
+      { name: "Godly",            url: "https://godly.website/",                cat: "General award galleries", note: "Astronomically good web design, hand-picked." },
+      { name: "The FWA",          url: "https://thefwa.com/",                   cat: "General award galleries", note: "Long-running showcase of innovative, experimental work." },
+
+      // SaaS / landing pages
+      { name: "Land-book",        url: "https://land-book.com/",                cat: "SaaS / landing pages",    note: "Large, filterable library of landing pages." },
+      { name: "SaaS Landing Page", url: "https://saaslandingpage.com/",         cat: "SaaS / landing pages",    note: "Landing pages from real SaaS companies, categorized." },
+      { name: "Lapa Ninja",       url: "https://www.lapa.ninja/",               cat: "SaaS / landing pages",    note: "Landing page inspiration with section-level breakdowns." },
+      { name: "One Page Love",    url: "https://onepagelove.com/",              cat: "SaaS / landing pages",    note: "Single-page site showcase and templates." },
+      { name: "Landingfolio",     url: "https://www.landingfolio.com/",         cat: "SaaS / landing pages",    note: "Landing pages plus copy-ready section components." },
+
+      // Minimal / editorial
+      { name: "Minimal Gallery",  url: "https://minimal.gallery/",              cat: "Minimal / editorial",     note: "Restrained, whitespace-forward compositions." },
+      { name: "Typewolf",         url: "https://www.typewolf.com/",             cat: "Minimal / editorial",     note: "Typography-led; what fonts trending sites use." },
+      { name: "Httpster",         url: "https://httpster.net/",                 cat: "Minimal / editorial",     note: "No-nonsense feed of good-looking sites." },
+
+      // Component / UI patterns
+      { name: "Mobbin",           url: "https://mobbin.com/",                   cat: "Component / UI patterns", note: "Real product screens and flows, web + mobile." },
+      { name: "Refero",           url: "https://refero.design/",                cat: "Component / UI patterns", note: "Searchable design references from real products." },
+      { name: "Page Flows",       url: "https://pageflows.com/",                cat: "Component / UI patterns", note: "Recorded user flows from popular products." },
+      { name: "UI Sources",       url: "https://www.uisources.com/",            cat: "Component / UI patterns", note: "Screens and flows organized by pattern." },
+    ];
+
+    const app = document.getElementById("app");
+    const cats = [...new Set(SITES.map(s => s.cat))];
+    for (const cat of cats) {
+      const items = SITES.filter(s => s.cat === cat);
+      const section = document.createElement("section");
+      section.innerHTML = `
+        <div class="cat-head"><h2>${cat}</h2><span class="count">${items.length}</span></div>
+        <div class="grid"></div>`;
+      const grid = section.querySelector(".grid");
+      for (const s of items) {
+        const a = document.createElement("a");
+        a.className = "card";
+        a.href = s.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.innerHTML = `
+          <div class="name">${s.name}</div>
+          <div class="host">${new URL(s.url).host}</div>
+          <div class="note">${s.note}</div>`;
+        grid.appendChild(a);
+      }
+      app.appendChild(section);
+    }
+  </script>
+</body>
+</html>
