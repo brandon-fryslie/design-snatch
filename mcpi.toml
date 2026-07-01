@@ -1,2 +1,2 @@
 [servers]
-"chromedevtools/chrome-devtools-mcp" = { command = "npx", args = ["-y", "chrome-devtools-mcp@latest", "--browserUrl", "http://127.0.0.1:9222"] }
+"chromedevtools/chrome-devtools-mcp" = { command = "npx", args = ["-y", "chrome-devtools-mcp@latest", "--browserUrl", "http://127.0.0.1:4222"] }
